@@ -1,0 +1,13 @@
+kind = "web"
+previewPath = "/"
+title = "Checkpoint"
+version = "1.0.0"
+id = "root_vanilla_app_01"
+
+[[services]]
+localPort = 8080
+name = "App"
+paths = ["/"]
+
+[services.development]
+run = "true"
