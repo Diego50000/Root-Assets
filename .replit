@@ -1,3 +1,4 @@
+run = "npm start"
 modules = ["nodejs-24"]
 
 [deployment]
@@ -21,7 +22,7 @@ outputType = "webview"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "node server.js"
-waitForPort = 8080
+waitForPort = 3000
 
 [[workflows.workflow]]
 name = "artifacts/mockup-sandbox: Component Preview Server"
@@ -37,7 +38,7 @@ isCanvasWorkflow = true
 task = "shell.exec"
 args = "pnpm --filter @workspace/mockup-sandbox run dev"
 cwd = "./artifacts/mockup-sandbox"
-waitForPort = 8081
+waitForPort = 3000
 
 [workflows.workflow.tasks.env]
 PORT = "8081"
@@ -61,12 +62,15 @@ path = "scripts/post-merge.sh"
 timeoutMs = 20000
 
 [[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
 localPort = 5000
 externalPort = 5000
 
 [[ports]]
 localPort = 8080
-externalPort = 8080
 
 [[ports]]
 localPort = 8081

@@ -5,7 +5,7 @@ version = "1.0.0"
 id = "root_vanilla_app_01"
 
 [[services]]
-localPort = 8080
+localPort = 3000
 name = "App"
 paths = ["/"]
 
