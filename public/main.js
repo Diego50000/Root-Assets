@@ -1,3 +1,8 @@
+// ───── Game State ─────
+let board = ['', '', '', '', '', '', '', '', ''];
+let currentPlayer = 'X';
+
+// ───── Auth ─────
 checkSession();
 
 async function register() {
@@ -12,7 +17,6 @@ async function register() {
 
   const data = await res.json();
   document.getElementById('message').textContent = data.error || '';
-
   if (data.ok) checkSession();
 }
 
@@ -28,7 +32,6 @@ async function login() {
 
   const data = await res.json();
   document.getElementById('message').textContent = data.error || '';
-
   if (data.ok) checkSession();
 }
 
@@ -47,4 +50,29 @@ async function checkSession() {
     document.getElementById('auth-section').style.display = 'none';
     document.getElementById('app-section').style.display = 'block';
   }
+}
+
+// ───── Game ─────
+function handleClick(index) {
+  if (board[index] !== '') return;
+
+  board[index] = currentPlayer;
+  renderBoard();
+
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  document.getElementById('turn-indicator').textContent = `Player ${currentPlayer}'s turn`;
+}
+
+function renderBoard() {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell, i) => {
+    cell.textContent = board[i];
+  });
+}
+
+function resetGame() {
+  board = ['', '', '', '', '', '', '', '', ''];
+  currentPlayer = 'X';
+  renderBoard();
+  document.getElementById('turn-indicator').textContent = "Player X's turn";
 }
