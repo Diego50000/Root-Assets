@@ -1,6 +1,19 @@
 // ───── Game State ─────
 let board = ['', '', '', '', '', '', '', '', ''];
 let currentPlayer = 'X';
+let gameOver = false;
+
+// ───── Win Combinations ─────
+const WIN_COMBOS = [
+  [0, 1, 2], // top row
+  [3, 4, 5], // middle row
+  [6, 7, 8], // bottom row
+  [0, 3, 6], // left column
+  [1, 4, 7], // middle column
+  [2, 5, 8], // right column
+  [0, 4, 8], // diagonal
+  [2, 4, 6], // diagonal
+];
 
 // ───── Auth ─────
 checkSession();
@@ -55,12 +68,35 @@ async function checkSession() {
 // ───── Game ─────
 function handleClick(index) {
   if (board[index] !== '') return;
+  if (gameOver) return;
 
   board[index] = currentPlayer;
   renderBoard();
 
+  if (checkWin(currentPlayer)) {
+    document.getElementById('turn-indicator').textContent = `Player ${currentPlayer} wins! 🎉`;
+    gameOver = true;
+    return;
+  }
+
+  if (checkDraw()) {
+    document.getElementById('turn-indicator').textContent = "It's a draw! 🤝";
+    gameOver = true;
+    return;
+  }
+
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
   document.getElementById('turn-indicator').textContent = `Player ${currentPlayer}'s turn`;
+}
+
+function checkWin(player) {
+  return WIN_COMBOS.some(combo => {
+    return combo.every(index => board[index] === player);
+  });
+}
+
+function checkDraw() {
+  return board.every(cell => cell !== '');
 }
 
 function renderBoard() {
@@ -73,6 +109,7 @@ function renderBoard() {
 function resetGame() {
   board = ['', '', '', '', '', '', '', '', ''];
   currentPlayer = 'X';
+  gameOver = false;
   renderBoard();
   document.getElementById('turn-indicator').textContent = "Player X's turn";
 }
